@@ -1,115 +1,93 @@
-<h1 align="center">Regulatory Change for Claude Code</h1>
+# Regulatory Change for Claude Code
 
-<p align="center">
-  <strong>The open-source regulatory change desk that is just a database and Claude Code.</strong>
-</p>
+Know which regulatory changes still need a decision, who owns the work and what evidence supports sign-off. Your records in a database you own. Built by Enterprise DNA.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free MIT code. Install and run the change desk yourself. | Your fields, rules, export mapping, preferred stack and a web front end if needed. | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Bloomberg Regology data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=regology">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/regology?utm_source=github&utm_medium=readme&utm_campaign=regology">How it works</a></td>
-  </tr>
-</table>
+[Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=regology).
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-regology">Instead of Bloomberg Regology</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## Your weekly work
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+Check the official sources you watch, triage new changes, record impact decisions, chase implementation actions and review the evidence before a different person signs off. Revised facts require fresh decisions and evidence. This is a trusted-operator desk for one business, not a global regulatory intelligence service or legal advice.
 
----
+Works with Claude Code, Codex, OpenCode or Cursor. Every runtime reads the same commands.
 
-## What is this
+## Start with a private demo
 
-Regulatory Change for Claude Code does the job you pay Bloomberg Regology for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Bloomberg Regology dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Bloomberg Regology per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=regology).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or newer:
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/regulatory-change-for-claude-code.git
-cd regulatory-change-for-claude-code
 npm install
+npm test
 npm run demo
+npm run desk -- triage
+npm run desk -- action-chase
+npm run desk -- source-watch
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Leave DATABASE_URL unset for the local PGlite demo. Set it only to an operator-controlled Postgres database for shared use. Do not seed production. All notices and decisions in the demo are synthetic, and relative dates deliberately include stale sources and overdue work.
 
-### Use it with your own Postgres or Supabase
+The five weekly rituals are `/source-watch`, `/triage`, `/effective-dates`, `/action-chase` and `/weekly-review`. `/compliance` shows evidence and record gaps with sources. `/draft-review` writes a local draft and never sends it. `npm run desk -- help` documents all flags. Read commands show human tables and support --json. Lookups accept UUID prefixes and unique case-insensitive name fragments; ambiguity lists candidates and exits 1.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## Ten questions to ask across your own records
 
-## The commands
+These are custom queries that run today. We have not tested whether the vendor can answer them in a configured account.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+1. Which sources have never been checked? `npm run desk -- insights 1`
+2. Which owners have overdue source checks? `npm run desk -- insights 2`
+3. Which high-priority changes still lack an assessment? `npm run desk -- insights 3`
+4. Which upcoming dates have unfinished actions? `npm run desk -- insights 4`
+5. Which applicable changes have no implementation action? `npm run desk -- insights 5`
+6. Which owners have overdue actions? `npm run desk -- insights 6`
+7. Which completed actions need evidence after a change was revised? `npm run desk -- insights 7`
+8. Which personal-information evidence needs a retention review? `npm run desk -- insights 8`
+9. Which non-applicable decisions still need independent sign-off? `npm run desk -- insights 9`
+10. Which sources account for the unassessed workload? `npm run desk -- insights 10`
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Source checks and evidence
 
-## Instead of Bloomberg Regology
+Save reviewed official text privately, then use `check-source` with the source code, file and capture reference. The first capture is a baseline. Changed content creates a triage item. The tool does not fetch pages, decide that a legal change occurred or guarantee coverage. A failed source check must not be logged as successful.
 
-<!-- TODO(author): how to bring data across from Bloomberg Regology; link docs/replace-regology.md -->
+Every mutation records --by. Assessment and sign-off names must differ. Applicable changes need actions; action completion needs evidence for the current change version. Import revisions invalidate current assessments, completion and sign-off while preserving history. Evidence references must be checked against the originals. Actor names are self-declared, and a database administrator can alter the record. See [compliance scope](docs/compliance.md).
 
-## Architecture
+## Bring your Regology records
 
+The importer accepts CSV with explicit mapping. The vendor documents CSV interchange and report downloads, but does not publish a standard header layout. Obtain an authorised export and map it once before running:
+
+```bash
+npm run desk -- import regology imports/changes.csv --map=imports/mapping.json --dry-run --by="Migration operator"
+npm run desk -- import regology imports/changes.csv --map=imports/mapping.json --by="Migration operator"
 ```
-regulatory-change-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
 
-## Built for coding agents
+[The replacement guide](docs/replace-regology.md) covers required fields, validation, revision handling, source data rights and reconciliation. The example CSV is synthetic. Historical approvals, attachments and global legal-content feeds need separate migration or connections. A clean mapped register can move in a day; the full switch depends on your coverage and contract.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Your first hour: ten things to ask for
 
-## Contributing
+1. Add the regulators and official sources our business actually watches.
+2. Set a weekly source-review interval and name each owner.
+3. Show the sources we have never checked.
+4. Test our mapped export without saving changes.
+5. Record an impact assessment with its source and rationale.
+6. Create an implementation action with an agreed owner and date.
+7. Attach evidence for the current version and complete the action.
+8. Prepare an evidence pack for an independent reviewer.
+9. Add a business-unit field using `/customise` and a new migration.
+10. Add a read-only management report using `/new-view`.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+## Paperwork and views
 
-## Want it installed and run for you?
+brand.json controls the business name, logo and colours. Impact assessments and evidence packs render into docs-out/. The week and assurance views render into views/. These are read-only HTML snapshots, printable to PDF. [Why no front end](docs/why-no-front-end.md) explains the base and what a custom interface adds.
 
-Enterprise DNA installs Regulatory Change for Claude Code for your business, migrates your Bloomberg Regology data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+## Data ownership and checks
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=regology)
-- Read more: [enterprisedna.co/omni/instead-of/regology](https://enterprisedna.co/omni/instead-of/regology?utm_source=github&utm_medium=readme&utm_campaign=regology)
+Nine domain tables use UUIDs, timestamps and update triggers. Public privileges are revoked and RLS has no public access policies. This is for trusted operators, not a tenant permission system. Keep imports, snapshots, source captures and generated reports private. The database owner controls access and backups.
 
-## License
+`npm run desk -- export exports/review-01` preserves every domain record in JSON plus a change-register CSV. Export is not an automatic restore. Test backup recovery before cutover. Retention reviews preserve legal holds and never delete data.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+`npm test` covers source baselines and changes, approvals, version invalidation, current evidence, privacy record checks, atomic imports, dry runs, duplicates, column mapping, CSV roundtrip, generated HTML escaping and real process exit codes. GitHub Actions runs Linux and Windows plus a disposable Postgres database. A local pass does not establish a hosted workflow result.
+
+MIT. Independent of Bloomberg Regology and Anthropic. [See the comparison](https://enterprisedna.co/omni/instead-of/regology?utm_source=github&utm_medium=readme&utm_campaign=regology).

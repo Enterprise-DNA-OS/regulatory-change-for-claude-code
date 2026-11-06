@@ -1,11 +1,44 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "impact-assessment",
+    "title": "Impact assessment record",
+    "for_each": "select id,external_id from changes order by external_id",
+    "file": "external_id",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Recorded change",
+        "layout": "record",
+        "sql": "select external_id,title,summary,citation,effective_date,review_due,owner,version from changes where id=$1"
+      },
+      {
+        "title": "Assessment history",
+        "sql": "select version,decision,rationale,assessed_by,created_at from assessments where change_id=$1 order by created_at"
+      },
+      {
+        "title": "Implementation actions",
+        "sql": "select title,owner,due_date,status,completed_version from actions where change_id=$1 order by due_date"
+      },
+      {
+        "title": "Sign-off record",
+        "sql": "select version,signed_by,reason,created_at from signoffs where change_id=$1 order by created_at"
+      }
+    ]
+  },
+  {
+    "name": "evidence-pack",
+    "title": "Implementation evidence pack",
+    "for_each": "select id,external_id from changes order by external_id",
+    "file": "external_id",
+    "sections": [
+      {
+        "title": "Evidence references",
+        "note": "References must be checked against the original documents. A record here is not proof of legal compliance.",
+        "sql": "select a.title,e.version,e.reference,e.description,e.recorded_by,e.retention_review,e.legal_hold from actions a join evidence e on e.action_id=a.id where a.change_id=$1 order by e.created_at"
+      },
+      {
+        "title": "Recorded activity",
+        "sql": "select event,actor,created_at from history where entity_id=$1 order by created_at"
+      }
     ]
   }
 ]

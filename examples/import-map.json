@@ -1,0 +1,11 @@
+{
+  "external_id": "Alert reference",
+  "title": "Alert title",
+  "summary": "Description",
+  "source": "Source code",
+  "citation": "Citation URL",
+  "effective_date": "Effective on",
+  "review_due": "Review by",
+  "owner": "Assigned owner",
+  "priority": "Priority"
+}
